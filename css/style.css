@@ -1,0 +1,147 @@
+body{
+    background-color: #0D0D0D;
+    overflow: hidden;
+}
+a{
+    text-decoration: none;
+    color: #fff;
+}
+
+/* loading */
+.loading{
+    background-color: #000;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.loader {
+  color: #fff;
+  font-size: 10px;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  position: relative;
+  text-indent: -9999em;
+  animation: mulShdSpin 1.3s infinite linear;
+  transform: translateZ(0);
+}
+
+@keyframes mulShdSpin {
+  0%,
+  100% {
+    box-shadow: 0 -3em 0 0.2em, 
+    2em -2em 0 0em, 3em 0 0 -1em, 
+    2em 2em 0 -1em, 0 3em 0 -1em, 
+    -2em 2em 0 -1em, -3em 0 0 -1em, 
+    -2em -2em 0 0;
+  }
+  12.5% {
+    box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 
+    3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, 
+    -2em 2em 0 -1em, -3em 0 0 -1em, 
+    -2em -2em 0 -1em;
+  }
+  25% {
+    box-shadow: 0 -3em 0 -0.5em, 
+    2em -2em 0 0, 3em 0 0 0.2em, 
+    2em 2em 0 0, 0 3em 0 -1em, 
+    -2em 2em 0 -1em, -3em 0 0 -1em, 
+    -2em -2em 0 -1em;
+  }
+  37.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em,
+     3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, 
+     -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+  }
+  50% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em,
+     3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, 
+     -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+  }
+  62.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em,
+     3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, 
+     -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+  }
+  75% {
+    box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 
+    3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, 
+    -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+  }
+  87.5% {
+    box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 
+    3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, 
+    -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+  }
+}
+  
+/* side nav menu */
+.side{
+  z-index: 5555;
+  transition: left 0.3s ease;
+}
+.nav-tab{
+  background-color: #0D0D0D;
+}
+.nav-header{
+    width: 65px;
+    background-color: #fff;
+}
+.nav-footer{
+    color: #fff;
+}
+.nav-footer i {
+    font-size: 16px;
+    color: #fff;
+}
+img{
+    width: 100%;
+}
+i{
+    font-size: 32px;
+    color: #000000;
+}
+.ico i{
+    display: block;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+/* cards */
+.meal-layer{
+  height: 100%;
+  width: 100%;
+  top: 100%;
+  background-color: #f9f6f6ca;
+  transition: 0.5s;
+}
+.meal:hover .meal-layer{
+  top: 0;
+}
+/* ingredient */
+.ingredient-card , .ingredient-card i{
+  color: #fff;
+}
+/* contact us */
+.btn .btn-outline-danger:hover{
+  background-color: #DC3545;
+  color: #fff;
+}
+.invalid-feedback{
+  background-color: #F8D7DA;
+  color: #842029;
+  text-align: center;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.badge-tag{
+  background-color: #F8D7DA;
+  color: #842029;
+}
