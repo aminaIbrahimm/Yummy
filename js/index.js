@@ -1,6 +1,7 @@
 var menuIcon = document.getElementById("menuIcon");
 var closeIcon = document.getElementById("closeIcon");
 var navTab = document.getElementById("navTab");
+var navHeader = document.querySelector(".nav-header");
 var meal = document.querySelector(".meal");
 $(function() {
     $(".loader").fadeOut(1000, function(){
@@ -18,7 +19,39 @@ function menuSide(){
 function closeSide(){
     menuIcon.classList.toggle("d-none");
     closeIcon.classList.toggle("d-none");
-    navTab.classList.toggle("d-none");
+    var links = $(".nav-link-anim").get().reverse();
+    links.forEach(function(link, i) {
+        setTimeout(() => {
+            $(link).removeClass("show");
+            if (i === links.length - 1) {
+                setTimeout(() => {
+                    navTab.classList.toggle("open");
+                    navHeader.classList.toggle("open");
+                }, 100); 
+            }
+        }, i * 100);
+    });
+}
+function menuSide() {
+    menuIcon.classList.toggle("d-none");
+    closeIcon.classList.toggle("d-none");
+    navTab.classList.toggle("open");
+    navHeader.classList.toggle("open");
+    if (navTab.classList.contains("open")) {
+        $(".nav-link-anim").removeClass("show");
+        $(".nav-link-anim").each(function(i) {
+            setTimeout(() => {
+                $(this).addClass("show");
+            }, i * 100); 
+        });
+    } else {
+        var links = $(".nav-link-anim").get().reverse();
+        links.forEach(function(link, i) {
+            setTimeout(() => {
+                $(link).removeClass("show");
+            }, i * 100);
+        });
+    }
 }
 async function getMeals(){
     try{

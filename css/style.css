@@ -80,18 +80,42 @@ a{
     -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
   }
 }
-  
 /* side nav menu */
 .side{
   z-index: 5555;
-  transition: left 0.3s ease;
 }
 .nav-tab{
   background-color: #0D0D0D;
+  left: 60px;
+  top: 0;
+  width: 250px;
+  z-index: 1000;
+  transition: transform 0.5s;
+  transform: translateX(-100%);
+}
+.nav-header.open{
+  left: 250px;
+}
+.nav-tab.open{
+  transform: translateX(0);
+} 
+.nav-link-anim {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.5s;
+}
+.nav-link-anim.show {
+    opacity: 1;
+    transform: translateY(0);
 }
 .nav-header{
-    width: 65px;
-    background-color: #fff;
+  width: 65px;
+  background-color: #fff;
+  position: fixed;
+  transition: left 0.5s;
+  height: 100vh;
+  left: 0;
+  top: 0;
 }
 .nav-footer{
     color: #fff;
@@ -112,7 +136,15 @@ i{
     font-size: 16px;
     margin-bottom: 4px;
 }
-
+.nav-link-anim {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.5s cubic-bezier(.68,-0.55,.27,1.55);
+}
+.nav-link-anim.show {
+    opacity: 1;
+    transform: translateY(0);
+}
 /* cards */
 .meal-layer{
   height: 100%;
