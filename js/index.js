@@ -3,14 +3,29 @@ var closeIcon = document.getElementById("closeIcon");
 var navTab = document.getElementById("navTab");
 var navHeader = document.querySelector(".nav-header");
 var meal = document.querySelector(".meal");
-$(function() {
-    $(".loader").fadeOut(1000, function(){
-        $(".loading").slideUp(1000, function(){
+// $(function() {
+//     $(".loader").fadeOut(1000, function(){
+//         $(".loading").slideUp(1000, function(){
+//             $("body").css({"overflow": "auto"});
+//             $(".loading").remove();
+//         });
+//     });
+// });
+function showLoader() {
+    if ($(".loading").length === 0) {
+        $("body").append(`<div class="loading"><span class="loader"></span></div>`);
+    }
+    $(".loading").show();
+    $("body").css({"overflow": "hidden"});
+}
+function hideLoader() {
+    $(".loader").fadeOut(500, function(){
+        $(".loading").slideUp(500, function(){
             $("body").css({"overflow": "auto"});
             $(".loading").remove();
         });
     });
-});
+}
 function menuSide(){
     menuIcon.classList.toggle("d-none");
     closeIcon.classList.toggle("d-none");
@@ -32,6 +47,9 @@ function closeSide(){
         }, i * 100);
     });
 }
+$(".nav-link-anim").on("click", function() {
+    closeSide();
+});
 function menuSide() {
     menuIcon.classList.toggle("d-none");
     closeIcon.classList.toggle("d-none");
@@ -54,6 +72,7 @@ function menuSide() {
     }
 }
 async function getMeals(){
+    showLoader();
     try{
         var url = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=`);
         var dataApi = await url.json();
@@ -61,6 +80,7 @@ async function getMeals(){
     } catch(Error){
         console.log("Error");
     }
+    hideLoader();
 }
 getMeals();
 function displayData(meals){
@@ -95,6 +115,7 @@ $("#areaLink").on("click", function() {
     showAreas();
 });
 async function getMealDetails(mealId) {
+    showLoader();
     $("#searchContainer").html("");
     try {
         let res = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
@@ -132,9 +153,11 @@ async function getMealDetails(mealId) {
     } catch (err) {
         $("#rowData").html("<div class='text-danger'>Error loading meal details.</div>");
     }
+    hideLoader();
 }
 
 function showSearchInputs() {
+    showLoader();
     $("#searchContainer").html(`
         <div class="row my-4">
             <div class="col-md-6">
@@ -153,6 +176,7 @@ function showSearchInputs() {
         let letter = $(this).val();
         searchMealsByFirstLetter(letter);
     });
+    hideLoader();
 }
 async function searchMealsByName(name) {
     if (!name) {
@@ -174,6 +198,7 @@ async function searchMealsByFirstLetter(letter) {
 }
 
 async function showCategories() {
+    showLoader();
     $("#searchContainer").html(""); 
     $("#rowData").html('<div class="text-center my-5"><span class="loader"></span></div>'); 
 
@@ -183,13 +208,17 @@ async function showCategories() {
         let cats = data.categories;
 
         let catsHtml = '';
-        for (let i = 0; i < cats.length; i++) {
+        let count = Math.min(cats.length, 20);
+        for (let i = 0; i < count; i++) {
             catsHtml += `
                 <div class="col-md-3">
-                    <div class="category-card text-center p-3 rounded-3 bg-light" style="cursor:pointer" data-category="${cats[i].strCategory}">
-                        <img src="${cats[i].strCategoryThumb}" class="w-100 rounded-3 mb-2" alt="${cats[i].strCategory}">
-                        <h5>${cats[i].strCategory}</h5>
-                        <p class="small">${cats[i].strCategoryDescription.split(" ").slice(0,15).join(" ")}...</p>
+                    <div class="meal position-relative overflow-hidden category-card text-center rounded-3" style="cursor:pointer" data-category="${cats[i].strCategory}">
+                        <img src="${cats[i].strCategoryThumb}" class="w-100 mb-2" alt="${cats[i].strCategory}">
+                        <div class="meal-layer position-absolute">
+                            <h3>${cats[i].strCategory}</h3>
+                            <p>${cats[i].strCategoryDescription.split(" ").slice(0,20).join(" ")}</p>
+                        </div>
+                        
                     </div>
                 </div>
             `;
@@ -203,6 +232,7 @@ async function showCategories() {
     } catch {
         $("#rowData").html("<div class='text-danger'>Error loading categories.</div>");
     }
+    hideLoader();
 }
 
 async function getMealsByCategory(category) {
@@ -217,6 +247,7 @@ async function getMealsByCategory(category) {
 }
 
 async function showAreas() {
+    showLoader();
     $("#searchContainer").html(""); 
     $("#rowData").html('<div class="text-center my-5"><span class="loader"></span></div>'); 
 
@@ -245,9 +276,10 @@ async function showAreas() {
     } catch {
         $("#rowData").html("<div class='text-danger'>Error loading areas.</div>");
     }
+    hideLoader();
 }
-
 async function getMealsByArea(area) {
+    showLoader();
     $("#rowData").html('<div class="text-center my-5"><span class="loader"></span></div>');
     try {
         let res = await fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`);
@@ -256,9 +288,11 @@ async function getMealsByArea(area) {
     } catch {
         $("#rowData").html("<div class='text-danger'>Error loading meals.</div>");
     }
+    hideLoader();
 }
 
 async function showIngredients() {
+    showLoader();
     $("#searchContainer").html("");
     $("#rowData").html('<div class="text-center my-5"><span class="loader"></span></div>');
 
@@ -288,6 +322,7 @@ async function showIngredients() {
     } catch {
         $("#rowData").html("<div class='text-danger'>Error loading ingredients.</div>");
     }
+    hideLoader();
 }
 
 async function getMealsByIngredient(ingredient) {
@@ -306,39 +341,43 @@ $("#ingredientsLink").on("click", function() {
 });
 
 function showContactForm() {
+    showLoader();
     $("#searchContainer").html("");
     $("#rowData").html(`
-        <form id="contactForm" class="row w-75 g-4">
-            <div class="col-md-6">
-                <input type="text" id="nameInput" class="form-control" placeholder="Name">
-                <div class="invalid-feedback">Special characters and numbers not allowed</div>
-            </div>
-            <div class="col-md-6">
-                <input type="email" id="emailInput" class="form-control" placeholder="Email">
-                <div class="invalid-feedback">Email not valid <br> *exemple@yyy.zzz</div>
-            </div>
-            <div class="col-md-6">
-                <input type="text" id="phoneInput" class="form-control" placeholder="Phone">
-                <div class="invalid-feedback">Enter valid Phone Number</div>
-            </div>
-            <div class="col-md-6">
-                <input type="number" id="ageInput" class="form-control" placeholder="Age">
-                <div class="invalid-feedback">Enter valid age</div>
-            </div>
-            <div class="col-md-6">
-                <input type="password" id="passwordInput" class="form-control" placeholder="Password">
-                <div class="invalid-feedback">Enter valid password *Minimum eight characters, at least one letter and one number:*</div>
-            </div>
-            <div class="col-md-6">
-                <input type="password" id="repasswordInput" class="form-control" placeholder="Re-enter Password">
-                <div class="invalid-feedback">Passwords do not match.</div>
-            </div>
-            <div class="col-12 text-center">
-                <button type="submit" id="submitBtn" class="btn btn-outline-danger px-2">Submit</button>
-            </div>
-        </form>
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+            <form id="contactForm" class="row w-75 g-4 p-4 rounded-3">
+                <div class="col-md-6">
+                    <input type="text" id="nameInput" class="form-control" placeholder="Name">
+                    <div class="invalid-feedback">Special characters and numbers not allowed</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="email" id="emailInput" class="form-control" placeholder="Email">
+                    <div class="invalid-feedback">Email not valid <br> *exemple@yyy.zzz</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" id="phoneInput" class="form-control" placeholder="Phone">
+                    <div class="invalid-feedback">Enter valid Phone Number</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="number" id="ageInput" class="form-control" placeholder="Age">
+                    <div class="invalid-feedback">Enter valid age</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="password" id="passwordInput" class="form-control" placeholder="Password">
+                    <div class="invalid-feedback">Enter valid password *Minimum eight characters, at least one letter and one number:*</div>
+                </div>
+                <div class="col-md-6">
+                    <input type="password" id="repasswordInput" class="form-control" placeholder="Re-enter Password">
+                    <div class="invalid-feedback">Passwords do not match.</div>
+                </div>
+                <div class="col-12 text-center">
+                    <button type="submit" id="submitBtn" class="btn btn-outline-danger px-2" disabled>Submit</button>
+                </div>
+            </form>
+        </div>
     `);
     $("#contactForm input").on("input", validateContactForm);
+    hideLoader();
 }
 
 function validateContactForm() {
@@ -361,6 +400,9 @@ function validateContactForm() {
     $("#ageInput").toggleClass("is-invalid", !ageValid);
     $("#passwordInput").toggleClass("is-invalid", !passwordValid);
     $("#repasswordInput").toggleClass("is-invalid", !repasswordValid);
+
+    $("#submitBtn").prop("disabled", !(nameValid && emailValid && phoneValid && ageValid && passwordValid && repasswordValid));
+
 }
 $("#contactLink").on("click", function() {
     showContactForm();
